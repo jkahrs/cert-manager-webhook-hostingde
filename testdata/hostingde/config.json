@@ -1,0 +1,5 @@
+{
+  "secretName": "hostingde-secret",
+  "zoneName": "example.org",
+  "TTL": 3600
+}
