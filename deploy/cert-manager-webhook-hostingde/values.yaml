@@ -1,0 +1,30 @@
+groupName: acme.sealedplatform.com
+
+certManager:
+  namespace: cert-manager
+  serviceAccountName: cert-manager
+
+image:
+  repository: sealedplatform/cert-manager-webhook-hostingde
+  tag: v1
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 443
+
+resources: {}
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
