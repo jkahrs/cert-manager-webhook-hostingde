@@ -88,7 +88,7 @@ apiVersion: cert-manager.io/v1alpha3
 kind: Certificate
 metadata:
   name: example-cert
-  namespace: cert-manager
+  namespace: default
 spec:
   commonName: example.com
   dnsNames:
