@@ -74,6 +74,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: hostingde-secret
+  namespace: cert-manager
 type: Opaque
 data:
   api-key: your-key-base64-encoded
