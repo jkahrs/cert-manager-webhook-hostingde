@@ -114,6 +114,8 @@ First, you need to have hosting.de account with access to the DNS control panel.
 Then you need to replace `zoneName` parameter at `testdata/hostingde/config.json` file with actual one.
 
 You also must encode your api token into base64 and put it into the `testdata/hostingde/secret.yml` file:
+
+In case there is a source IP restriction for the API key, you will also need to add your public IP address in the hosting.de control panel.
 ```bash
 echo -n APIKEY | base64
 ```
