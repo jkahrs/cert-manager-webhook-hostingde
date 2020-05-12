@@ -29,14 +29,14 @@ helm uninstall --namespace cert-manager cert-manager-webhook-hostingde
 
 Alternatively, generate manifests from the template and apply them manually:
 ```bash
-helm template cert-manager-webhook-hostingde deploy/cert-manager-webhook-hostingde
+helm template --namespace cert-manager cert-manager-webhook-hostingde deploy/cert-manager-webhook-hostingde
 ```
 
 ## Issuer
 
 Create a `ClusterIssuer` or `Issuer` resource as following:
 ```yaml
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1alpha3
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
@@ -84,7 +84,7 @@ data:
 Finally you can create certificates, for example:
 
 ```yaml
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1alpha3
 kind: Certificate
 metadata:
   name: example-cert
