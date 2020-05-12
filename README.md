@@ -60,7 +60,7 @@ spec:
             config:
               secretName: hostingde-secret
               zoneName: example.com
-              TTL: 3600
+              TTL: 60
 ```
 
 ### Credentials
