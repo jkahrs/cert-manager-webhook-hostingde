@@ -6,7 +6,7 @@ This solver can be used when you want to use cert-manager with the hosting.de DN
 -   [go](https://golang.org/) >= 1.14.0
 -   [helm](https://helm.sh/) >= v3.0.0
 -   [kubernetes](https://kubernetes.io/) >= v1.14.0
--   [cert-manager](https://cert-manager.io/) >= 0.12.0
+-   [cert-manager](https://cert-manager.io/) >= 0.15.0
 
 ## Installation
 
