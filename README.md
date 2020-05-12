@@ -1,6 +1,6 @@
 # ACME webhook for hosting.de DNS API
 
-This solver can be used when you want to use cert-manager with hostingde DNS API. API documentation is [here](https://www.hosting.de/api/)
+This solver can be used when you want to use cert-manager with the hosting.de DNS API. API documentation is [here](https://www.hosting.de/api/)
 
 ## Requirements
 -   [go](https://golang.org/) >= 1.14.0
@@ -25,6 +25,7 @@ To uninstall the webhook run
 ```bash
 helm uninstall --namespace cert-manager cert-manager-webhook-hostingde
 ```
+
 
 Alternatively, generate manifests from the template and apply them manually:
 ```bash
@@ -110,7 +111,8 @@ DNS01 webhook.**
 
 First, you need to have hosting.de account with access to the DNS control panel. You need to create an API token and have a registered DNS zone there.
 Then you need to replace `zoneName` parameter at `testdata/hostingde/config.json` file with actual one.
-You also must encode your api token into base64 and put it into the `testdata/hostingde/hostingde-secret.yml` file:
+
+You also must encode your api token into base64 and put it into the `testdata/hostingde/secret.yml` file:
 ```bash
 echo -n APIKEY | base64
 ```
