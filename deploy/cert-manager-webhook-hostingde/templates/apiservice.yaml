@@ -9,7 +9,8 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
-    certmanager.k8s.io/inject-ca-from: "{{ .Release.Namespace }}/{{ include "cert-manager-webhook-hostingde.servingCertificate" . }}"
+    cert-manager.io/inject-ca-from: "{{ .Release.Namespace }}/{{ include "cert-manager-webhook-hostingde.servingCertificate" . }}"
+    cert-manager.io/inject-apiserver-ca: "true"
 spec:
   group: {{ .Values.groupName }}
   groupPriorityMinimum: 1000
