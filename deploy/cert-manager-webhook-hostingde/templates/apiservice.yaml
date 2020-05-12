@@ -2,6 +2,7 @@ apiVersion: apiregistration.k8s.io/v1beta1
 kind: APIService
 metadata:
   name: v1alpha1.{{ .Values.groupName }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ include "cert-manager-webhook-hostingde.name" . }}
     chart: {{ include "cert-manager-webhook-hostingde.chart" . }}
