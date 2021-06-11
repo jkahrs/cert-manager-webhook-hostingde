@@ -78,7 +78,7 @@ func (c *hostingdeDNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) erro
 	// get the ZoneConfig for that domain
 	zonesFind := ZoneConfigsFindRequest{
 		Filter: Filter{
-			Field: "zoneName",
+			Field: "zoneNameUnicode",
 			Value: c.config.ZoneName,
 		},
 		Limit: 1,
