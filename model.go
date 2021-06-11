@@ -5,12 +5,16 @@ import "encoding/json"
 // APIError represents an error in an API response.
 // https://www.hosting.de/api/?json#warnings-and-errors
 type APIError struct {
-	Code          int      `json:"code"`
-	ContextObject string   `json:"contextObject"`
-	ContextPath   string   `json:"contextPath"`
-	Details       []string `json:"details"`
-	Text          string   `json:"text"`
-	Value         string   `json:"value"`
+	Code          int    `json:"code"`
+	ContextObject string `json:"contextObject"`
+	ContextPath   string `json:"contextPath"`
+	Text          string `json:"text"`
+	Value         string `json:"value"`
+
+	Details []struct {
+		Key   string      `json:"key"`
+		Value interface{} `json:"value"`
+	} `json:"details"`
 }
 
 // Filter is used to filter FindRequests to the API.
