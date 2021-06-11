@@ -21,17 +21,28 @@ func (d *hostingdeDNSProviderSolver) listZoneConfigs(findRequest ZoneConfigsFind
 
 	findResponse := &ZoneConfigsFindResponse{}
 
-	rawResp, err := d.post(uri, findRequest, findResponse)
+	_, err := d.post(uri, findRequest, findResponse)
 	if err != nil {
 		return nil, err
 	}
 
+	cacheableResponse := ZoneConfigsFindResponse{
+		BaseResponse: BaseResponse{
+			Errors:   findResponse.Errors,
+			Warnings: findResponse.Warnings,
+			Status:   findResponse.Status,
+		},
+		Response: findResponse.Response,
+	}
+
 	if len(findResponse.Response.Data) == 0 {
-		return nil, fmt.Errorf("%w: %s", err, toUnreadableBodyMessage(uri, rawResp))
+		cacheableResponse.BaseResponse.Warnings = append(cacheableResponse.BaseResponse.Warnings, "empty result")
+		return nil, fmt.Errorf("%w: %s", err, toUnreadableBodyMessage(uri, []byte(cacheableResponse.String())))
 	}
 
 	if findResponse.Status != "success" && findResponse.Status != "pending" {
-		return findResponse, errors.New(toUnreadableBodyMessage(uri, rawResp))
+		cacheableResponse.BaseResponse.Warnings = append(cacheableResponse.BaseResponse.Warnings, "invalid zoneConfigsFindResponse status")
+		return findResponse, errors.New(toUnreadableBodyMessage(uri, []byte(cacheableResponse.String())))
 	}
 
 	return findResponse, nil
@@ -44,13 +55,22 @@ func (d *hostingdeDNSProviderSolver) updateZone(updateRequest ZoneUpdateRequest)
 	// but we'll need the ID later to delete the record
 	updateResponse := &ZoneUpdateResponse{}
 
-	rawResp, err := d.post(uri, updateRequest, updateResponse)
+	_, err := d.post(uri, updateRequest, updateResponse)
 	if err != nil {
 		return nil, err
 	}
 
+	cacheableResponse := ZoneUpdateResponse{
+		BaseResponse: BaseResponse{
+			Errors:   updateResponse.Errors,
+			Warnings: append(updateResponse.Warnings, "invalid updateResponse status"),
+			Status:   updateResponse.Status,
+		},
+		Response: updateResponse.Response,
+	}
+
 	if updateResponse.Status != "success" && updateResponse.Status != "pending" {
-		return nil, errors.New(toUnreadableBodyMessage(uri, rawResp))
+		return nil, errors.New(toUnreadableBodyMessage(uri, []byte(cacheableResponse.String())))
 	}
 
 	return updateResponse, nil
@@ -116,6 +136,8 @@ func (d *hostingdeDNSProviderSolver) post(uri string, request interface{}, respo
 
 	err = json.Unmarshal(content, response)
 	if err != nil {
+		// errors here are still not guaranteed to be cacheable
+		// p.e. if Unmarshal failed due to changes on the API response format
 		return nil, fmt.Errorf("%w: %s", err, toUnreadableBodyMessage(uri, content))
 	}
 
@@ -123,5 +145,15 @@ func (d *hostingdeDNSProviderSolver) post(uri string, request interface{}, respo
 }
 
 func toUnreadableBodyMessage(uri string, rawBody []byte) string {
-	return fmt.Sprintf("the request %s sent a response with a body which is an invalid format: %q", uri, string(rawBody))
+	baseResp := &BaseResponse{}
+	if err := json.Unmarshal(rawBody, &baseResp); err == nil {
+		// try to extract errors from response
+		if len(baseResp.Errors) > 0 {
+			if clean, err := json.Marshal(baseResp); err == nil {
+				return fmt.Sprintf("the request %s sent a response with errors: %q", uri, clean)
+			}
+		}
+	}
+
+	return fmt.Sprintf("the request %s sent a response with a body which is an invalid format: %q", uri, rawBody)
 }
