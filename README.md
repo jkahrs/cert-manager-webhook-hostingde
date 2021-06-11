@@ -157,7 +157,7 @@ You can then run the test suite with:
 scripts/fetch-test-binaries.sh
 
 # then run the tests
-TEST_ZONE_NAME=example.com. make verify
+TEST_ZONE_NAME=example.org. make verify
 ```
 
 ### Create a new release
