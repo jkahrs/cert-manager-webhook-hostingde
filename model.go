@@ -104,6 +104,21 @@ type ZoneUpdateResponse struct {
 	Response Zone `json:"response"`
 }
 
+// String adds the Stringer interface for ZoneUpdateResponse
+// The stringer removes transaction IDs to allow caching of responses
+func (z ZoneUpdateResponse) String() string {
+	o, _ := json.Marshal(&ZoneUpdateResponse{
+		BaseResponse: BaseResponse{
+			Errors:   z.Errors,
+			Warnings: z.Warnings,
+			Status:   z.Status,
+		},
+		Response: z.Response,
+	})
+
+	return string(o)
+}
+
 // ZoneConfigsFindRequest represents a API ZonesFind request.
 // https://www.hosting.de/api/?json#list-zoneconfigs
 type ZoneConfigsFindRequest struct {
@@ -128,11 +143,25 @@ type ZoneConfigsFindResponse struct {
 	} `json:"response"`
 }
 
+// String adds the Stringer interface to ZoneConfigsFindResponse
+// The stringer removes transaction IDs to allow caching of responses
+func (z ZoneConfigsFindResponse) String() string {
+	o, _ := json.Marshal(&ZoneConfigsFindResponse{
+		BaseResponse: BaseResponse{
+			Errors:   z.Errors,
+			Warnings: z.Warnings,
+			Status:   z.Status,
+		},
+		Response: z.Response,
+	})
+	return string(o)
+}
+
 // BaseResponse Common response struct.
 // https://www.hosting.de/api/?json#responses
 type BaseResponse struct {
 	Errors   []APIError `json:"errors"`
-	Metadata Metadata   `json:"metadata"`
+	Metadata Metadata   `json:"-"`
 	Warnings []string   `json:"warnings"`
 	Status   string     `json:"status"`
 }
