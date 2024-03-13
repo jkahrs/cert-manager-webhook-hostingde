@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "ms-kubernetes-tools.vscode-kubernetes-tools"
+    ]
+}
