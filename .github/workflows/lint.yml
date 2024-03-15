@@ -1,5 +1,5 @@
 ---
-name: Lint chart
+name: Lint chart and Dockerfile
 
 on: [ pull_request, push ]
 
@@ -20,3 +20,9 @@ jobs:
 
       - name: Run helm lint
         run: helm lint deploy/cert-manager-webhook-hostingde/ --strict
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          config: ".github/hadolint.yml"
