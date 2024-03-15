@@ -55,7 +55,7 @@ spec:
     solvers:
       - dns01:
           webhook:
-            groupName: acme.sealedplatform.com
+            groupName: hosting.de
             solverName: hostingde
             config:
               secretName: hostingde-secret

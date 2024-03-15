@@ -1,11 +1,11 @@
 ---
 # Create a selfsigned Issuer, in order to create a root CA certificate for
 # signing webhook serving certificates
-apiVersion: cert-manager.io/v1alpha3
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: {{ include "cert-manager-webhook-hostingde.selfSignedIssuer" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ include "cert-manager-webhook-hostingde.name" . }}
     chart: {{ include "cert-manager-webhook-hostingde.chart" . }}
@@ -17,11 +17,11 @@ spec:
 ---
 
 # Generate a CA Certificate used to sign certificates for the webhook
-apiVersion: cert-manager.io/v1alpha3
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ include "cert-manager-webhook-hostingde.rootCACertificate" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ include "cert-manager-webhook-hostingde.name" . }}
     chart: {{ include "cert-manager-webhook-hostingde.chart" . }}
@@ -38,11 +38,11 @@ spec:
 ---
 
 # Create an Issuer that uses the above generated CA certificate to issue certs
-apiVersion: cert-manager.io/v1alpha3
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: {{ include "cert-manager-webhook-hostingde.rootCAIssuer" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ include "cert-manager-webhook-hostingde.name" . }}
     chart: {{ include "cert-manager-webhook-hostingde.chart" . }}
@@ -55,11 +55,11 @@ spec:
 ---
 
 # Finally, generate a serving certificate for the webhook to use
-apiVersion: cert-manager.io/v1alpha3
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ include "cert-manager-webhook-hostingde.servingCertificate" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ include "cert-manager-webhook-hostingde.name" . }}
     chart: {{ include "cert-manager-webhook-hostingde.chart" . }}
