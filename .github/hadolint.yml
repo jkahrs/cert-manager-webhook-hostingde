@@ -1,0 +1,9 @@
+---
+trustedRegistries:
+  - docker.io
+
+
+ignored:
+  # "Pin versions in apk add."
+  # => Package versions are fixed by pinning the Alpine version.
+  - "DL3018"
