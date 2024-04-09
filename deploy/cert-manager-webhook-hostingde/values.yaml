@@ -15,7 +15,6 @@ certManager:
 
 image:
   repository: ghcr.io/jkahrs/cert-manager-webhook-hostingde
-  tag: v1.0.1
   pullPolicy: IfNotPresent
 
 nameOverride: ""
