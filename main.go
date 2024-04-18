@@ -214,7 +214,7 @@ func clientConfig(c *hostingdeDNSProviderSolver, ch *v1alpha1.ChallengeRequest) 
 	if err != nil {
 		return nil, err
 	}
-	config.ZoneName = cfg.ZoneName
+
 	config.TTL = cfg.TTL
 
 	secretName := cfg.SecretName
@@ -229,5 +229,40 @@ func clientConfig(c *hostingdeDNSProviderSolver, ch *v1alpha1.ChallengeRequest) 
 	}
 	config.APIKey = apiKey
 
+	if cfg.ZoneName == "" {
+		cfg.ZoneName, err = c.searchZoneName(config, ch.ResolvedZone)
+		if err != nil {
+			return nil, err
+		}
+	}
+	config.ZoneName = cfg.ZoneName
+
 	return &config, nil
+}
+
+func (c *hostingdeDNSProviderSolver) searchZoneName(config Config, searchZone string) (string, error) {
+	parts := strings.Split(searchZone, ".")
+	parts = parts[:len(parts)-1]
+	for i := 0; i <= len(parts)-2; i++ {
+		config.ZoneName = strings.Join(parts[i:], ".")
+		klog.Infof("Trying to find zoneCofig for: %s", config.ZoneName)
+
+		zonesFind := ZoneConfigsFindRequest{
+			Filter: Filter{
+				Field: "zoneName",
+				Value: config.ZoneName,
+			},
+			Limit: 1,
+			Page:  1,
+		}
+		zonesFind.AuthToken = config.APIKey
+
+		zoneConfig, _ := c.getZone(zonesFind)
+		if zoneConfig != nil {
+			klog.Infof("Found zoneConfig for zone: %s", config.ZoneName)
+			return config.ZoneName, nil
+		}
+	}
+
+	return "", fmt.Errorf("unable to find dns zone with: %s", searchZone)
 }

@@ -105,7 +105,7 @@ func (d *hostingdeDNSProviderSolver) getZone(findRequest ZoneConfigsFindRequest)
 	// retry in case the zone was edited recently and is not yet active
 	err := backoff.Retry(operation, backoff.WithContext(bo, ctx))
 	if err != nil {
-		return nil, err
+		return zoneConfig, err
 	}
 
 	return zoneConfig, nil
