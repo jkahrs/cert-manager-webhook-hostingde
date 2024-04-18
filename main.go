@@ -245,7 +245,7 @@ func (c *hostingdeDNSProviderSolver) searchZoneName(config Config, searchZone st
 	parts = parts[:len(parts)-1]
 	for i := 0; i <= len(parts)-2; i++ {
 		config.ZoneName = strings.Join(parts[i:], ".")
-		klog.Infof("Trying to find zoneCofig for: %s", config.ZoneName)
+		klog.Infof("Trying to find zoneConfig for: %s", config.ZoneName)
 
 		zonesFind := ZoneConfigsFindRequest{
 			Filter: Filter{
