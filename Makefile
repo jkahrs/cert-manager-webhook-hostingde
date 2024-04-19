@@ -10,3 +10,7 @@ verify:
 
 build:
 	docker build -t "$(IMAGE_NAME):$(IMAGE_TAG)" .
+
+clean:
+	go clean
+	go clean -testcache
