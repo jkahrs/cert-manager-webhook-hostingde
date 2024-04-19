@@ -160,3 +160,7 @@ scripts/fetch-test-binaries.sh
 TEST_ZONE_NAME=example.com. make verify
 ```
 
+### Create a new release
+
+1. Increase `version` in `Chart.yaml`.
+1. Create a GitHub release with the same value, e.g. `1.2.0`.
