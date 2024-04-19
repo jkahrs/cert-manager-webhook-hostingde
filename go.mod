@@ -1,4 +1,4 @@
-module gitlab.uniscon-rnd.de/sealed-platform/cert-manager-webhook-hostingde
+module github.com/jkahrs/cert-manager-webhook-hostingde
 
 go 1.14
 
