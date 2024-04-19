@@ -36,7 +36,8 @@ helm template --namespace cert-manager cert-manager-webhook-hostingde deploy/cer
 
 Create a `ClusterIssuer` or `Issuer` resource as following:
 ```yaml
-apiVersion: cert-manager.io/v1alpha3
+---
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
@@ -70,6 +71,7 @@ If you choose another name for the secret than `hostingde-secret`, ensure you mo
 
 The secret for the example above will look like this:
 ```yaml
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -85,7 +87,8 @@ data:
 Finally you can create certificates, for example:
 
 ```yaml
-apiVersion: cert-manager.io/v1alpha3
+---
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: example-cert
@@ -98,6 +101,33 @@ spec:
     name: letsencrypt-staging
     kind: ClusterIssuer
   secretName: example-cert
+```
+
+or via Ingress:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  tls:
+    - hosts:
+        - "example.com"
+      secretName: hello-world
+  rules:
+    - host: "example.com"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: hello-world
+                port:
+                  number: 80
 ```
 
 ## Development
