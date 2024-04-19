@@ -60,7 +60,7 @@ spec:
             solverName: hostingde
             config:
               secretName: hostingde-secret
-              zoneName: example.com
+              zoneName: example.com # (Optional): When not provided the Zone will searched via API by recursion on full domain name
               TTL: 60
 ```
 
@@ -141,7 +141,7 @@ else they will have undetermined behaviour when used with cert-manager.
 DNS01 webhook.**
 
 First, you need to have hosting.de account with access to the DNS control panel. You need to create an API token and have a registered DNS zone there.
-Then you need to copy `testdata-template` to `testdata` and  replace `zoneName` parameter at `testdata/hostingde/config.json` file with actual one.
+Then you need to copy `testdata-template` to `testdata`. Optionally replace the `zoneName` parameter at `testdata/hostingde/config.json` file with an actual one. If `zoneName` is not provided it will be searched via the API by recursion starting from `TEST_ZONE_NAME`
 
 You also must encode your api token into base64 and put it into the `testdata/hostingde/secret.yml` file:
 
@@ -157,7 +157,7 @@ You can then run the test suite with:
 scripts/fetch-test-binaries.sh
 
 # then run the tests
-TEST_ZONE_NAME=example.com. make verify
+TEST_ZONE_NAME=example.org. make verify
 ```
 
 ### Create a new release
