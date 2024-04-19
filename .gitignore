@@ -19,3 +19,6 @@
 kubebuilder
 apiserver.local.config
 _out
+
+# Test data contains private information like domain name and API key
+testdata/
