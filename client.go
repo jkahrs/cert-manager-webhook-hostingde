@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -129,7 +129,7 @@ func (d *hostingdeDNSProviderSolver) post(uri string, request interface{}, respo
 
 	defer resp.Body.Close()
 
-	content, err := ioutil.ReadAll(resp.Body)
+	content, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.New(toUnreadableBodyMessage(uri, content))
 	}

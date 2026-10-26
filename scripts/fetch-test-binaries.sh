@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-curl https://storage.googleapis.com/kubebuilder-tools/kubebuilder-tools-1.15.5-linux-amd64.tar.gz -o kubebuilder-tools.tar.gz
-tar -zvxf kubebuilder-tools.tar.gz
+set -euo pipefail
 
-rm kubebuilder-tools.tar.gz
+# envtest binaries (etcd, kube-apiserver, kubectl) matching the k8s.io/* version in go.mod
+assets=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.24 use 1.36.x --bin-dir kubebuilder -p path)
+mkdir -p kubebuilder/bin
+cp -f "$assets"/* kubebuilder/bin/
