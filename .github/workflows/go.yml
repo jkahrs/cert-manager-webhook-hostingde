@@ -7,12 +7,12 @@
     build-go:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v7
         - name: Setup Go
-          uses: actions/setup-go@v4
+          uses: actions/setup-go@v7
           with:
-            go-version: '1.21'
+            go-version-file: go.mod
         - name: Install dependencies
-          run: go get .
+          run: go mod download
         - name: Build
           run: go build .
